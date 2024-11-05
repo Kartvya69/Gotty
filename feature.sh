@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 # Clear the console
 clear
@@ -39,12 +39,11 @@ install_pufferpanel_docker() {
         sudo sh get-docker.sh
         rm get-docker.sh
     fi
-    docker run -d --name pufferpanel \
-        -p 8080:8080 \
-        -v /var/lib/pufferpanel:/var/lib/pufferpanel \
-        -v /var/log/pufferpanel:/var/log/pufferpanel \
-        -v /etc/pufferpanel:/etc/pufferpanel \
-        ghcr.io/pufferpanel/pufferpanel
+     mkdir -p /var/lib/pufferpanel
+ docker volume create pufferpanel-config
+ docker create --name pufferpanel -p 8080:8080 -p 5657:5657 -v pufferpanel-config:/etc/pufferpanel -v /var/lib/pufferpanel:/var/lib/pufferpanel -v /var/run/docker.sock:/var/run/docker.sock --restart=on-failure pufferpanel/pufferpanel:latest
+ docker start pufferpanel
+ docker exec -it pufferpanel /pufferpanel/pufferpanel user add
     echo "PufferPanel installation with Docker completed. Access it at http://localhost:8080"
 }
 
@@ -68,9 +67,6 @@ install_skyport_panel() {
     sudo mv panel skyport
     cd skyport
     sudo npm install
-    sudo npm run seed
-    sudo npm run createUser
-    sudo node .
     echo "Skyport Panel installation completed. Skyport Panel is now running."
 }
 
