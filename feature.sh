@@ -63,10 +63,10 @@ install_pufferpanel_no_docker() {
 install_skyport_panel() {
     echo "Installing Skyport Panel..."
     cd /etc
-    sudo git clone https://github.com/skyportlabs/panel
-    sudo mv panel skyport
+    git clone https://github.com/skyportlabs/panel
+    mv panel skyport
     cd skyport
-    sudo npm install
+    npm install
     echo "Skyport Panel installation completed. Skyport Panel is now running."
 }
 
